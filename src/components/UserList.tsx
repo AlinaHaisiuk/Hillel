@@ -1,8 +1,9 @@
 import React from "react";
-import { useUserContext } from "../context/UserContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const UserList = () => {
-  const { users } = useUserContext();
+  const users = useSelector((state: RootState) => state.user.users);
 
   return (
     <div>

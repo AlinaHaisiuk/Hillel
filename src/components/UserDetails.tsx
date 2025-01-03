@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/reducers/userReducer";
 
 const UserDetails = () => {
-  const { addUser } = useUserContext();
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
 
   const handleAddUser = () => {
     if (name.trim()) {
-      addUser(name);
+      dispatch(addUser(name));
       setName("");
     }
   };
