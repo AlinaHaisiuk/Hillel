@@ -1,0 +1,33 @@
+html
+  head
+    title Theme example and authentication
+    link(rel='icon', href=favicon)  
+
+    if theme === 'dark'
+      style.
+        body { background-color: gray ; color: white; }
+    else
+      style.
+        body { background-color: white; color: black; }
+
+  body
+    h1 Theme example and authentication
+    p Current theme: #{theme}  
+    
+    a(href='/set-theme/dark') Switch to dark theme
+    | | 
+    a(href='/set-theme/light') Switch to light theme
+
+    h2 Authentication
+    
+    form(action='/register', method='POST')
+      input(type='text', name='username', placeholder='Username')
+      input(type='password', name='password', placeholder='Password')
+      button(type='submit') Register
+
+    form(action='/login', method='POST')
+      input(type='text', name='username', placeholder='Username')
+      input(type='password', name='password', placeholder='Password')
+      button(type='submit') Login
+
+    a(href='/protected') Go to protected route
