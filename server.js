@@ -19,52 +19,117 @@ mongoose
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   age: { type: Number, required: true },
   hobbies: { type: [String], required: true },
 });
 
-const Users = mongoose.model("users", userSchema);
+const User = mongoose.model("User", userSchema);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("API is working!");
 });
 
 app.get("/users", async (req, res) => {
   try {
-    const users = await Users.find({});
-
-    console.log("Fetched users:", users);
-
-    if (users.length === 0) {
-      console.log("No users found in the database.");
-    }
-
+    const users = await User.find({}, "name email age");
     res.json(users);
   } catch (err) {
-    console.log("Error occurred:", err);
     res.status(500).json({ message: err.message });
   }
 });
 
-app.get("/add-test-user", async (req, res) => {
+app.post("/insertOne", async (req, res) => {
   try {
-    const testUser = new Users({
-      name: "Jane Doe",
-      email: "jane@abc.com",
-      age: 26,
-      hobbies: ["databases", "painting", "soccer"],
-    });
+    const { collectionName, document } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.insertOne(document);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
-    await testUser.save();
-    console.log("Test user added successfully");
-    res.send("Test user added successfully");
-  } catch (err) {
-    console.log("Error adding test user:", err);
-    res.status(500).json({ message: err.message });
+app.post("/insertMany", async (req, res) => {
+  try {
+    const { collectionName, documents } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.insertMany(documents);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.patch("/updateOne", async (req, res) => {
+  try {
+    const { collectionName, filter, update } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.updateOne(filter, { $set: update });
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.patch("/updateMany", async (req, res) => {
+  try {
+    const { collectionName, filter, update } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.updateMany(filter, { $set: update });
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.put("/replaceOne", async (req, res) => {
+  try {
+    const { collectionName, filter, replacement } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.replaceOne(filter, replacement);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.delete("/deleteOne", async (req, res) => {
+  try {
+    const { collectionName, filter } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.deleteOne(filter);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.delete("/deleteMany", async (req, res) => {
+  try {
+    const { collectionName, filter } = req.body;
+    const collection = db.collection(collectionName);
+    const result = await collection.deleteMany(filter);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get("/find", async (req, res) => {
+  try {
+    const { collectionName, query, projection } = req.query;
+    const collection = db.collection(collectionName);
+    const cursor = collection.find(JSON.parse(query || "{}"), {
+      projection: JSON.parse(projection || "{}"),
+    });
+    const results = await cursor.toArray();
+    res.json({ success: true, results });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
