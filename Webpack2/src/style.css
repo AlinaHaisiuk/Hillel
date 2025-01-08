@@ -1,0 +1,29 @@
+/* roboto-mono-300 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Roboto Mono";
+  font-style: normal;
+  font-weight: 300;
+  src: url("./roboto-mono-v23-latin-300.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+.pink-elem {
+  height: 300px;
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
+  border: 5px solid rgb(233, 107, 128);
+  font-size: 20px;
+  font-family: "Roboto Mono";
+  background: url("https://media.istockphoto.com/id/1350788505/photo/pink-color-background.webp?b=1&s=170667a&w=0&k=20&c=px8_dpg65OzCs0UJoLaspyknYKcIKiIGANv7XtYTDng=");
+}
+
+.blue-elem {
+  border: 5px solid rgb(233, 107, 128);
+  font-family: "Roboto Mono";
+  height: 60px;
+  width: 150px;
+  margin: 20px;
+  background: url("https://media.istockphoto.com/id/1350788505/photo/pink-color-background.webp?b=1&s=170667a&w=0&k=20&c=px8_dpg65OzCs0UJoLaspyknYKcIKiIGANv7XtYTDng=");
+}
